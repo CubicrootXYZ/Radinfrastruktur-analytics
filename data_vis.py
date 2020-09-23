@@ -218,6 +218,44 @@ class Statistics():
                 colors.append((1,1,1,1))
         pl.plotBar(y1.keys(),list(y1.values()), "Strassendichte - Auto", plot_y="d_edge [m/km^2]", rotate_x=True, color=colors, line_width=0.8, margin=0.4)
 
+    def byDensity2(self):
+        cf, cb, cs = r.getCities()
+        data = r.data
+        y1 = {}
+        for city in cf+cb+cs:
+            bike = data.loc[data['Stadt'] == city+", Bike"]
+            y1[city]=float(bike["Kreuzungsdichte 1/km2"])
+
+        colors = []
+        y1={k: v for k, v in sorted(y1.items(), key=lambda item: item[1])}
+        for key in y1:
+            if key in cf:
+                colors.append((0.9,0.6,0,1))
+            elif key in cb:
+                colors.append((0.2,0.4,0.9,1))
+            elif key in cs:
+                colors.append((0,0.7,0.1,1))
+            else:
+                colors.append((1,1,1,1))
+        pl.plotBar(y1.keys(),list(y1.values()), "Kreuzungsdichte - Rad", plot_y="d_edge [m/km^2]", rotate_x=True, color=colors, line_width=0.8, margin=0.4)
+
+        for city in cf+cb+cs:
+            car = data.loc[data['Stadt'] == city+", Car"]
+            y1[city]=float(car["Kreuzungsdichte 1/km2"])
+
+        colors = []
+        y1={k: v for k, v in sorted(y1.items(), key=lambda item: item[1])}
+        for key in y1:
+            if key in cf:
+                colors.append((0.9,0.6,0,1))
+            elif key in cb:
+                colors.append((0.2,0.4,0.9,1))
+            elif key in cs:
+                colors.append((0,0.7,0.1,1))
+            else:
+                colors.append((1,1,1,1))
+        pl.plotBar(y1.keys(),list(y1.values()), "Kreuzungsdichte - Auto", plot_y="d_edge [m/km^2]", rotate_x=True, color=colors, line_width=0.8, margin=0.4)
+
     def byTotalLength(self):
         data=r.data
         cf, cb, cs = r.getCities()
@@ -273,6 +311,6 @@ class Statistics():
         pl.plotDoubleBar(y2.keys(),list(y2.values()), y1, "Kanten- und Strassenlänge", ["Kantenlänge", "Strassenlänge"], plot_y="l [km]", rotate_x=True, line_width=0.4, margin=0.4)
 
 s = Statistics()
-s.byDensity()
+s.byDensity2()
 
 
